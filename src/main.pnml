@@ -21,6 +21,8 @@ if (!extended_feature_test("action3_signals_custom_signal_sprites")) {
 
 */
 
+// FIXME
+
 template t_signal() {
     [  66,  1,  44,  24, -15, -17,  "./gfx/embank1.png"]
     [  66,  1,  44,  24, -29, -10,  "./gfx/embank1.png"]
@@ -30,6 +32,17 @@ template t_signal() {
     [ 131,  1,  64,  31, -19, -22,  "./gfx/embank1.png"]
     [   1, 81,  64,  33, -57, -17,  "./gfx/embank1.png"]
     [  66, 81,  64,  33,  -5, -17,  "./gfx/embank1.png"]
+}
+
+template t_signal_alt() {
+    [  66,  1,  44,  24, -15, -17,  "./gfx/embank1.png"]
+    [  66,  1,  44,  24, -29, -10,  "./gfx/embank1.png"]
+    [  66, 41,  44,  24, -13, -10,  "./gfx/embank1.png"]
+    [  66, 41,  44,  24, -35, -17,  "./gfx/embank1.png"]
+    [ 131, 65,  64,  23, -45,  -9,  "./gfx/embank1.png"]
+    [ 196,  1,  64,  23, -19,   2,  "./gfx/embank1.png"]
+    [ 196, 25,  64,  31, -27, -22,  "./gfx/embank1.png"]
+    [ 131, 33,  64,  31, -35, -10,  "./gfx/embank1.png"]
 }
 
 spriteset (s_empty) {
@@ -43,41 +56,35 @@ spriteset (s_empty) {
     [1,1,1,1,0,0,"./gfx/embank1.png"]
 }
 
-spriteset (s_embank1) {
-    t_signal()
-}
-
-template t_icon(x){
+template t_icon(x,y){
     []
     []
     []
     []
     []
     []
-    [x*17+1,116,16,28,0,-30,"./gfx/embank1.png"]
+    [x*17+1,y*29+116,16,28,0,-30,"./gfx/embank1.png"]
     []
 }
 
-spriteset (s_embankment_icon_pbs_oneway)        {t_icon(0)}
-spriteset (s_embankment_icon_pbs_oneway_green)  {t_icon(1)}
-spriteset (s_embankment_icon_pbs)               {t_icon(2)}
-spriteset (s_embankment_icon_pbs_green)         {t_icon(3)}
-spriteset (s_embankment_icon_block)             {t_icon(4)}
-spriteset (s_embankment_icon_block_green)       {t_icon(5)}
-spriteset (s_embankment_icon_noentry)           {t_icon(6)}
-spriteset (s_embankment_icon_noentry_green)     {t_icon(7)}
+spriteset (s_embankment_icon_pbs_oneway)                    {t_icon(0,0)}
+spriteset (s_embankment_icon_pbs_oneway_green)              {t_icon(1,0)}
+spriteset (s_embankment_icon_pbs)                           {t_icon(2,0)}
+spriteset (s_embankment_icon_pbs_green)                     {t_icon(3,0)}
+spriteset (s_embankment_icon_block)                         {t_icon(4,0)}
+spriteset (s_embankment_icon_block_green)                   {t_icon(5,0)}
+spriteset (s_embankment_icon_noentry)                       {t_icon(6,0)}
+spriteset (s_embankment_icon_noentry_green)                 {t_icon(7,0)}
 
-switch (FEAT_SIGNALS, SELF, sw_embankment_track, getbits(extra_callback_info2, 16, 8)) {
-    s_embank1;
-}
+spriteset (s_embankment_icon_pbs_oneway_semaphore)          {t_icon(0,1)}
+spriteset (s_embankment_icon_pbs_oneway_semaphore_green)    {t_icon(1,1)}
+spriteset (s_embankment_icon_pbs_semaphore)                 {t_icon(2,1)}
+spriteset (s_embankment_icon_pbs_semaphore_green)           {t_icon(3,1)}
+spriteset (s_embankment_icon_block_semaphore)               {t_icon(4,1)}
+spriteset (s_embankment_icon_block_semaphore_green)         {t_icon(5,1)}
+spriteset (s_embankment_icon_noentry_semaphore)             {t_icon(6,1)}
+spriteset (s_embankment_icon_noentry_semaphore_green)       {t_icon(7,1)}
 
-switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
-    (signal_context_is_second == 0) ^ (signal_side == SIGNAL_SIDE_LEFT)
-        ) {
-    // this makes sure that the signal is always on the right side of the track
-    1: sw_embankment_track;
-    default: s_empty;
-}
 
 #define SIGNAL_TYPE_BLOCK_SIGNAL 0
 #define SIGNAL_TYPE_ENTRY_SIGNAL 1
@@ -87,6 +94,8 @@ switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
 #define SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL 5
 #define SIGNAL_TYPE_PROGRAMMABLE_SIGNAL 6
 #define SIGNAL_TYPE_NO_ENTRY_SIGNAL 7
+#define SIGNAL_STYLE_LIGHTS 0
+#define SIGNAL_STYLE_SEMAPHORE 1
 
 #define SIGNAL_GUI(name) \
 switch (FEAT_SIGNALS, SELF, sw_##name, getbits(extra_callback_info2, 0, 8)) { \
@@ -99,15 +108,66 @@ SIGNAL_GUI(name##_icon_block) \
 SIGNAL_GUI(name##_icon_pbs) \
 SIGNAL_GUI(name##_icon_pbs_oneway) \
 SIGNAL_GUI(name##_icon_noentry) \
-switch (FEAT_SIGNALS, SELF, sw_##name##_icon, getbits(extra_callback_info2, 16, 8)) { \
-    SIGNAL_TYPE_BLOCK_SIGNAL:           sw_##name##_icon_block; \
-    SIGNAL_TYPE_PATH_SIGNAL:            sw_##name##_icon_pbs; \
-    SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL:    sw_##name##_icon_pbs_oneway; \
-    SIGNAL_TYPE_NO_ENTRY_SIGNAL:        sw_##name##_icon_noentry; \
+SIGNAL_GUI(name##_icon_block_semaphore) \
+SIGNAL_GUI(name##_icon_pbs_semaphore) \
+SIGNAL_GUI(name##_icon_pbs_oneway_semaphore) \
+SIGNAL_GUI(name##_icon_noentry_semaphore) \
+switch (FEAT_SIGNALS, SELF, sw_##name##_icon, (getbits(extra_callback_info2, 16, 8) << 0) | (getbits(extra_callback_info2, 8, 8) << 8)) { \
+    SIGNAL_TYPE_BLOCK_SIGNAL:                       sw_##name##_icon_block; \
+    SIGNAL_TYPE_PATH_SIGNAL:                        sw_##name##_icon_pbs; \
+    SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL:                sw_##name##_icon_pbs_oneway; \
+    SIGNAL_TYPE_NO_ENTRY_SIGNAL:                    sw_##name##_icon_noentry; \
+    (1 << 8) | (SIGNAL_TYPE_BLOCK_SIGNAL):          sw_##name##_icon_block_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_PATH_SIGNAL):           sw_##name##_icon_pbs_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL):   sw_##name##_icon_pbs_oneway_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_NO_ENTRY_SIGNAL):       sw_##name##_icon_noentry_semaphore; \
     default: 1288; \
 } \
 
+#define SIGNAL_TRACK(name) \
+switch (FEAT_SIGNALS, SELF, sw_##name##_track, (getbits(extra_callback_info2, 16, 8) << 0) | (getbits(extra_callback_info2, 8, 8) << 8)) { \
+    SIGNAL_TYPE_BLOCK_SIGNAL:                       s_##name##_track_block; \
+    SIGNAL_TYPE_PATH_SIGNAL:                        s_##name##_track_pbs; \
+    SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL:                s_##name##_track_pbs_oneway; \
+    SIGNAL_TYPE_NO_ENTRY_SIGNAL:                    s_##name##_track_noentry; \
+    (1 << 8) | (SIGNAL_TYPE_BLOCK_SIGNAL):          s_##name##_track_block_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_PATH_SIGNAL):           s_##name##_track_pbs_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL):   s_##name##_track_pbs_oneway_semaphore; \
+    (1 << 8) | (SIGNAL_TYPE_NO_ENTRY_SIGNAL):       s_##name##_track_noentry_semaphore; \
+    default: 1288; \
+}
+
+spriteset (s_embank1) {
+    t_signal()
+}
+
+spriteset (s_embankment_track_block)                {t_signal()}
+spriteset (s_embankment_track_pbs)                  {t_signal()}
+spriteset (s_embankment_track_pbs_oneway)           {t_signal()}
+spriteset (s_embankment_track_noentry)              {t_signal()}
+spriteset (s_embankment_track_block_semaphore)      {t_signal_alt()}
+spriteset (s_embankment_track_pbs_semaphore)        {t_signal()}
+spriteset (s_embankment_track_pbs_oneway_semaphore) {t_signal()}
+spriteset (s_embankment_track_noentry_semaphore)    {t_signal()}
+
+
 SIGNAL_GUI2(embankment)
+
+/*
+switch (FEAT_SIGNALS, SELF, sw_embankment_track, getbits(extra_callback_info2, 16, 8)) {
+    s_embank1;
+}
+*/
+
+SIGNAL_TRACK(embankment)
+
+switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
+    (signal_context_is_second == 0) ^ (signal_side == SIGNAL_SIDE_LEFT)
+        ) {
+    // this makes sure that the signal is always on the right side of the track
+    1: sw_embankment_track;
+    default: s_empty;
+}
 
 switch (FEAT_SIGNALS, SELF, sw_embankment, signal_context) {
     SIGNAL_CONTEXT_GUI: sw_embankment_icon;
@@ -146,3 +206,9 @@ item (FEAT_SIGNALS, signals, 0) {
         sw_signals;
     }
 }
+
+/*
+replace (1291) {
+	[1,116,16,28,0,-30,"./gfx/embank1.png"]
+}
+*/
