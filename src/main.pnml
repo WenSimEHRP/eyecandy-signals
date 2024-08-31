@@ -1,0 +1,148 @@
+grf {
+    grfid:"WS\01\02";
+    name:string(STR_GRF_NAME);
+    desc:string(STR_GRF_DESC);
+    url:string(STR_GRF_URL);
+    version :1;
+    min_compatible_version :0;
+}
+
+if (!extended_feature_test("action3_signals_custom_signal_sprites")) {
+	error(FATAL, string(STR_UNSUPPORTED_VERSION));
+}
+
+/* How are things named:
+
+- Templates: t_<name>
+- Spritesets: s_<name>
+- Switches: sw_<name>
+- Spritelayouts: sp_<name>
+- Parameters: p_<name>
+
+*/
+
+template t_signal() {
+    [  66,  1,  44,  24, -15, -17,  "./gfx/embank1.png"]
+    [  66,  1,  44,  24, -29, -10,  "./gfx/embank1.png"]
+    [  66, 41,  44,  24, -13, -10,  "./gfx/embank1.png"]
+    [  66, 41,  44,  24, -35, -17,  "./gfx/embank1.png"]
+    [   1,  1,  64,  39, -45, -25,  "./gfx/embank1.png"]
+    [ 131,  1,  64,  31, -19, -22,  "./gfx/embank1.png"]
+    [   1, 81,  64,  33, -57, -17,  "./gfx/embank1.png"]
+    [  66, 81,  64,  33,  -5, -17,  "./gfx/embank1.png"]
+}
+
+spriteset (s_empty) {
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+    [1,1,1,1,0,0,"./gfx/embank1.png"]
+}
+
+spriteset (s_embank1) {
+    t_signal()
+}
+
+template t_icon(x){
+    []
+    []
+    []
+    []
+    []
+    []
+    [x*17+1,116,16,28,0,-30,"./gfx/embank1.png"]
+    []
+}
+
+spriteset (s_embankment_icon_pbs_oneway)        {t_icon(0)}
+spriteset (s_embankment_icon_pbs_oneway_green)  {t_icon(1)}
+spriteset (s_embankment_icon_pbs)               {t_icon(2)}
+spriteset (s_embankment_icon_pbs_green)         {t_icon(3)}
+spriteset (s_embankment_icon_block)             {t_icon(4)}
+spriteset (s_embankment_icon_block_green)       {t_icon(5)}
+spriteset (s_embankment_icon_noentry)           {t_icon(6)}
+spriteset (s_embankment_icon_noentry_green)     {t_icon(7)}
+
+switch (FEAT_SIGNALS, SELF, sw_embankment_track, getbits(extra_callback_info2, 16, 8)) {
+    s_embank1;
+}
+
+switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
+    (signal_context_is_second == 0) ^ (signal_side == SIGNAL_SIDE_LEFT)
+        ) {
+    // this makes sure that the signal is always on the right side of the track
+    1: sw_embankment_track;
+    default: s_empty;
+}
+
+#define SIGNAL_TYPE_BLOCK_SIGNAL 0
+#define SIGNAL_TYPE_ENTRY_SIGNAL 1
+#define SIGNAL_TYPE_EXIT_SIGNAL 2
+#define SIGNAL_TYPE_COMBO_SIGNAL 3
+#define SIGNAL_TYPE_PATH_SIGNAL 4
+#define SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL 5
+#define SIGNAL_TYPE_PROGRAMMABLE_SIGNAL 6
+#define SIGNAL_TYPE_NO_ENTRY_SIGNAL 7
+
+#define SIGNAL_GUI(name) \
+switch (FEAT_SIGNALS, SELF, sw_##name, getbits(extra_callback_info2, 0, 8)) { \
+    0: s_##name; \
+    default: s_##name##_green; \
+}
+
+#define SIGNAL_GUI2(name) \
+SIGNAL_GUI(name##_icon_block) \
+SIGNAL_GUI(name##_icon_pbs) \
+SIGNAL_GUI(name##_icon_pbs_oneway) \
+SIGNAL_GUI(name##_icon_noentry) \
+switch (FEAT_SIGNALS, SELF, sw_##name##_icon, getbits(extra_callback_info2, 16, 8)) { \
+    SIGNAL_TYPE_BLOCK_SIGNAL:           sw_##name##_icon_block; \
+    SIGNAL_TYPE_PATH_SIGNAL:            sw_##name##_icon_pbs; \
+    SIGNAL_TYPE_ONE_WAY_PATH_SIGNAL:    sw_##name##_icon_pbs_oneway; \
+    SIGNAL_TYPE_NO_ENTRY_SIGNAL:        sw_##name##_icon_noentry; \
+    default: 1288; \
+} \
+
+SIGNAL_GUI2(embankment)
+
+switch (FEAT_SIGNALS, SELF, sw_embankment, signal_context) {
+    SIGNAL_CONTEXT_GUI: sw_embankment_icon;
+    default: sw_embankment_direction;
+}
+
+switch (FEAT_SIGNALS, SELF, sw_default, signal_context) {
+    SIGNAL_CONTEXT_GUI: 1288;
+}
+
+switch (FEAT_SIGNALS, SELF, sw_signals, signal_style) {
+    1: sw_embankment;
+    default: sw_default;
+}
+
+#define SIGNAL_STYLE \
+bitmask( \
+    SIGNAL_TYPE_NORMAL, \
+    SIGNAL_TYPE_PBS, \
+    SIGNAL_TYPE_PBS_ONEWAY, \
+    SIGNAL_TYPE_NO_ENTRY \
+)
+
+item (FEAT_SIGNALS, signals, 0) {
+    property {
+        extra_aspects: 6;
+
+        define_style: 1;
+        style_name: string(STR_SIGNAL_STYLE_1);
+        style_electric_enabled:  SIGNAL_STYLE;
+        style_semaphore_enabled: SIGNAL_STYLE;
+        style_always_reserve_through: 1;
+        style_both_sides: 1;
+    }
+    graphics {
+        sw_signals;
+    }
+}

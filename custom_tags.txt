@@ -1,0 +1,2 @@
+GRF     :WenSim's Eyecandy Signals
+ABBRV   :WES

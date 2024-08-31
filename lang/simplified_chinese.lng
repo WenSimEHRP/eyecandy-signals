@@ -1,0 +1,8 @@
+##grflangid 0x56
+
+STR_GRF_NAME            :WenSim 的装饰性信号灯
+STR_GRF_DESC            :A set of eyecandy signals for OpenTTD JGRPP
+STR_GRF_URL             :
+STR_UNSUPPORTED_VERSION :{PUSH_COLOUR}{WHITE}{GRF}{POP_COLOUR} 需要 OpenTTD JGRPP.
+
+STR_SIGNAL_STYLE_1      :{ABBRV} Auz 护岸

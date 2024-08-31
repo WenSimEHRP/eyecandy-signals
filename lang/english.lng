@@ -1,0 +1,8 @@
+##grflangid 0x01
+
+STR_GRF_NAME            :{GRF}
+STR_GRF_DESC            :A set of eyecandy signals for OpenTTD JGRPP
+STR_GRF_URL             :
+STR_UNSUPPORTED_VERSION :{PUSH_COLOUR}{WHITE}{GRF}{POP_COLOUR} requires OpenTTD JGRPP.
+
+STR_SIGNAL_STYLE_1      :{ABBRV} Auz embankments

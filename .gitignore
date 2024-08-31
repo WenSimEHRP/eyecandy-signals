@@ -1,0 +1,5 @@
+*.nml
+nml/
+.nmlcache
+*.grf
+*.md5
