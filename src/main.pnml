@@ -174,13 +174,8 @@ switch (FEAT_SIGNALS, SELF, sw_embankment, signal_context) {
     default: sw_embankment_direction;
 }
 
-switch (FEAT_SIGNALS, SELF, sw_default, signal_context) {
-    SIGNAL_CONTEXT_GUI: 1288;
-}
-
 switch (FEAT_SIGNALS, SELF, sw_signals, signal_style) {
     1: sw_embankment;
-    default: sw_default;
 }
 
 #define SIGNAL_STYLE \
@@ -194,6 +189,7 @@ bitmask( \
 item (FEAT_SIGNALS, signals, 0) {
     property {
         extra_aspects: 6;
+        no_default_style: 1;
 
         define_style: 1;
         style_name: string(STR_SIGNAL_STYLE_1);
