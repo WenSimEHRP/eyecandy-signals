@@ -11,13 +11,14 @@ if (!extended_feature_test("action3_signals_custom_signal_sprites")) {
 	error(FATAL, string(STR_UNSUPPORTED_VERSION));
 }
 
-/* How are things named:
+/* Naming scheme:
 
-- Templates: t_<name>
-- Spritesets: s_<name>
-- Switches: sw_<name>
+- Templates:     t_<name>
+- Spritesets:    s_<name>
+- Switches:      sw_<name>
 - Spritelayouts: sp_<name>
-- Parameters: p_<name>
+- Parameters:    p_<name>
+- Procedures:    fn_<name>
 
 */
 
@@ -138,7 +139,7 @@ SIGNAL_TRACK(embankment)
 switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
     (signal_context_is_second == 0) ^ (signal_side == SIGNAL_SIDE_LEFT)
         ) {
-    // this makes sure that the signal is always on the right side of the track
+    // this makes sure that the signal is always on the correct side of the track
     1: sw_embankment_track;
     default: s_empty;
 }
@@ -156,7 +157,7 @@ SIGNAL_TRACK(tower)
 switch (FEAT_SIGNALS, SELF, sw_tower_direction,
     (signal_context_is_second == 0) ^ (signal_side == SIGNAL_SIDE_LEFT)
         ) {
-    // this makes sure that the signal is always on the right side of the track
+    // this makes sure that the signal is always on the correct side of the track
     1: sw_tower_track;
     default: s_empty;
 }
