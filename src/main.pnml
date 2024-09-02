@@ -107,13 +107,24 @@ template t_embankment(x, path) {
 }
 
 spriteset (s_embankment_track_block)                {t_embankment(0, "./gfx/auz_embankment.png")}
-spriteset (s_embankment_track_pbs)                  {t_embankment(2, "./gfx/auz_embankment.png")}
-spriteset (s_embankment_track_pbs_oneway)           {t_embankment(4, "./gfx/auz_embankment.png")}
-spriteset (s_embankment_track_noentry)              {t_embankment(6, "./gfx/auz_embankment.png")}
 spriteset (s_embankment_track_block_semaphore)      {t_embankment(1, "./gfx/auz_embankment.png")}
+spriteset (s_embankment_track_pbs)                  {t_embankment(2, "./gfx/auz_embankment.png")}
 spriteset (s_embankment_track_pbs_semaphore)        {t_embankment(3, "./gfx/auz_embankment.png")}
+// spriteset (s_embankment_track_pbs_oneway)           {t_embankment(4, "./gfx/auz_embankment.png")}
 spriteset (s_embankment_track_pbs_oneway_semaphore) {t_embankment(5, "./gfx/auz_embankment.png")}
+spriteset (s_embankment_track_noentry)              {t_embankment(6, "./gfx/auz_embankment.png")}
 spriteset (s_embankment_track_noentry_semaphore)    {t_embankment(7, "./gfx/auz_embankment.png")}
+
+spriteset (s_embankment_track_pbs_oneway) {
+    [1,1,1,1,0,0, "./gfx/auz_embankment.png"]
+    [1,1,1,1,0,0, "./gfx/auz_embankment.png"]
+    [1,1,1,1,0,0, "./gfx/auz_embankment.png"]
+    [1,1,1,1,0,0, "./gfx/auz_embankment.png"]
+    [4*(64+1)+1,    1, 64, 39, -45, -25, "./gfx/auz_embankment.png"]
+    [4*(64+1)+1,   41, 64, 39, -19, -14, "./gfx/auz_embankment.png"]
+    [       170,  145, 32, 39,   5, -30, "./gfx/auz_embankment.png"]
+    [       137,  145, 32, 39, -35, -18, "./gfx/auz_embankment.png"]
+}
 
 spriteset (s_embankment_icon_block)                         {t_icon(0,0,1,145,"./gfx/auz_embankment.png")}
 spriteset (s_embankment_icon_block_green)                   {t_icon(1,0,1,145,"./gfx/auz_embankment.png")}
