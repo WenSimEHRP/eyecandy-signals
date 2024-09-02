@@ -1,8 +1,8 @@
 ##grflangid 0x56
 
-STR_GRF_NAME            :WenSim 的装饰性信号灯
-STR_GRF_DESC            :A set of eyecandy signals for OpenTTD JGRPP
-STR_GRF_URL             :
+STR_GRF_NAME            :WenSim 的装饰性信号灯 {PUSH_COLOUR}{WHITE}{VERSION}{POP_COLOUR} {PUSH_COLOUR}{GOLD}[JGRPP]{POP_COLOUR}
+STR_GRF_DESC            :{PUSH_COLOUR}{ORANGE}{GRF}{}{ABBRV}{POP_COLOUR} {PUSH_COLOUR}{WHITE}{VERSION}{POP_COLOUR}{}{}图像：{}{PUSH_COLOUR}{GREEN}GarryG{}WenSim{POP_COLOUR}{}代码：{}{PUSH_COLOUR}{BLUE}WenSim{POP_COLOUR}{}{}需要 OpenTTD {PUSH_COLOUR}{GOLD}JGRPP{POP_COLOUR} {PUSH_COLOUR}{WHITE}0.40.0{POP_COLOUR} 或更高版本。{}{}{COPYRIGHT}WenSim 2024{}许可证：GNU GPL v2
+STR_GRF_URL             :https://github.com/wensimehrp/eyecandy-signals
 STR_UNSUPPORTED_VERSION :{PUSH_COLOUR}{WHITE}{GRF}{POP_COLOUR} 需要 OpenTTD JGRPP.
 
 STR_SIGNAL_STYLE_1      :{ABBRV} 护岸

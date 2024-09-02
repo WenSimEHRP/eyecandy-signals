@@ -1,2 +1,3 @@
 GRF     :WenSim's Eyecandy Signals
 ABBRV   :WES
+VERSION :0.1

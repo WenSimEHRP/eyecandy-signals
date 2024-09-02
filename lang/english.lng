@@ -1,8 +1,8 @@
 ##grflangid 0x01
 
-STR_GRF_NAME            :{GRF}
-STR_GRF_DESC            :A set of eyecandy signals for OpenTTD JGRPP
-STR_GRF_URL             :
+STR_GRF_NAME            :{GRF} {PUSH_COLOUR}{WHITE}{VERSION}{POP_COLOUR} {PUSH_COLOUR}{GOLD}[JGRPP]{POP_COLOUR}
+STR_GRF_DESC            :{PUSH_COLOUR}{ORANGE}{GRF}{}{ABBRV}{POP_COLOUR} {PUSH_COLOUR}{WHITE}{VERSION}{POP_COLOUR}{}{}Graphics:{}{PUSH_COLOUR}{GREEN}GarryG{}WenSim{POP_COLOUR}{}Code:{}{PUSH_COLOUR}{BLUE}WenSim{POP_COLOUR}{}{}Requires OpenTTD {PUSH_COLOUR}{GOLD}JGRPP{POP_COLOUR} {PUSH_COLOUR}{WHITE}0.40.0{POP_COLOUR} or higher.{}{}{COPYRIGHT}WenSim 2024{}Licensed under GNU GPL v2
+STR_GRF_URL             :https://github.com/wensimehrp/eyecandy-signals
 STR_UNSUPPORTED_VERSION :{PUSH_COLOUR}{WHITE}{GRF}{POP_COLOUR} requires OpenTTD JGRPP.
 
 STR_SIGNAL_STYLE_1      :{ABBRV} Embankments
