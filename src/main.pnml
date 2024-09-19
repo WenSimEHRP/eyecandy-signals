@@ -195,7 +195,7 @@ bitmask( \
 
 item (FEAT_SIGNALS, signals, 0) {
     property {
-        extra_aspects: 6;
+        extra_aspects: 0;
         no_default_style: 1;
 
         define_style: 1;
@@ -204,6 +204,7 @@ item (FEAT_SIGNALS, signals, 0) {
         style_semaphore_enabled: SIGNAL_STYLE;
         style_always_reserve_through: 1;
         style_both_sides: 1;
+        style_no_aspect_increase: 1;
 
         // define_style: 2;
         // style_name: string(STR_SIGNAL_STYLE_2);
