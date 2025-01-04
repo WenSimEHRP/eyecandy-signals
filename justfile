@@ -2,7 +2,7 @@
 # but it is used to automate the build process.
 
 # Default target
-def: build copy
+def: build
 
 # Preprocess and build GRF file
 build:
@@ -14,8 +14,8 @@ clean:
     rm -f eyecandy-signals.nml eyecandy-signals.grf eyecandy-signals.md5
 
 # Copy GRF file to OpenTTD newgrf directory
-copy:
-    cp eyecandy-signals.grf /d/data/documents/openttd/newgrf/
+cp:
+    cp eyecandy-signals.grf ~/.local/share/openttd/newgrf/
 
 install_deps:
     git clone https://github.com/jgrennison/nml.git
