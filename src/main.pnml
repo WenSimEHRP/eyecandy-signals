@@ -155,9 +155,14 @@ switch (FEAT_SIGNALS, SELF, sw_embankment_direction,
     default: s_empty;
 }
 
+switch (FEAT_SIGNALS, SELF, sw_embankment_landscape, terrain_type) {
+    TILETYPE_SNOW: s_empty;
+    default: sw_embankment_direction;
+}
+
 switch (FEAT_SIGNALS, SELF, sw_embankment, signal_context) {
     SIGNAL_CONTEXT_GUI: sw_embankment_icon;
-    default: sw_embankment_direction;
+    default: sw_embankment_landscape;
 }
 
 /*
